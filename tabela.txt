@@ -1,0 +1,8 @@
+CREATE TABLE produto (
+    id SERIAL PRIMARY KEY,
+    nome_produto VARCHAR(200) NOT NULL,
+    preco DECIMAL(10, 2) NOT NULL,
+    marca VARCHAR(100),
+    imagem VARCHAR(100),
+    CONSTRAINT produto_nome_produto_key UNIQUE (nome_produto)
+);
