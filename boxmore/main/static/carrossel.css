@@ -1,0 +1,245 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* body {
+    line-height: 1.6;
+    color: #333;
+} */
+
+.container {
+    
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    background: #2c1a74;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.header .menu {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header .menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero {
+    background: url('banner.jpg') no-repeat center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero .btn {
+    background: #ff6600;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
+
+.carrosselgeral {
+    /* margin-top: 100px; */
+    font-family: Arial, sans-serif;
+    /* display:; */
+    /* justify-content:; */
+    align-items: center;
+    display: block;
+    /* background-color: rgba(0, 0, 0, 0.363); */
+    background-attachment: fixed;
+    /* right: 200%; */
+     background-color: rgb(187, 187, 187);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    
+
+
+
+}
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(119, 120, 121);
+    font-size: 30px;
+    background-color: black;
+    /* background-position: 400px; */
+}
+
+
+.caixa1 {
+    margin: auto;
+    height: 320px;
+    width: 79%;
+    /* margin-top: 10px; */
+    overflow: hidden;
+   
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.caixa-imagens {
+    
+    height: 425px;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.caixa-imagens img {
+   
+    width: 200px;
+    flex-shrink: 50;
+    height: 60%;
+
+}
+
+
+.button {
+    position: absolute;
+  
+    /* cursor: cell; */
+  
+     transform: translateY(-600%);
+    background-color: rgba(206, 196, 196, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px 20px 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 40%; 
+
+}
+.container .btn {
+    background: #333;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor:grab;
+}
+
+.button.left {
+  
+    left: 2px;
+
+
+}
+
+.button.right {
+    right: 3px;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.preco {
+    display: flex;
+    color: #fff;
+ 
+    background-color: grey;
+    
+    
+}
+.container{
+    padding: 10px;
+    /* cursor: grab; */
+    
+}
+
+.sobre, .contato {
+    padding: 50px 0;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.contato form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.contato input, .contato textarea {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.contato button {
+    background: #ff6600;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+.carrinho, .pagamento {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.carrinho ul {
+    list-style: none;
+    padding: 0;
+}
+
+.carrinho li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.carrinho button {
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.carrinho-icon {
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+#carrinho-contagem {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 50%;
+    min-width: 20px;
+    text-align: center;
+}
+

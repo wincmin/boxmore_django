@@ -26,7 +26,7 @@ urlpatterns = [
     # path('sobre',views.sobre,name='sobre'),
      path('contato/', views.contato, name='contato'),
     
-     
+     path('', views.carrossel, name='carrossel'),
      path('cadastro/', views.cadastro, name='cadastro'),
      path('editarusuario/<int:id>', views.editarusuario, name='editarusuario'),
      path('excluirususario/<int:id>/', views.excluirususario, name='excluirususario'),
