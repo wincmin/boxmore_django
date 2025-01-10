@@ -41,6 +41,7 @@ urlpatterns = [
     #   path('paginainicial', views.paginainicial, name='paginainicial'),
         path('accounts/', include('django.contrib.auth.urls')),
       path('atendimento/<int:id>/',views.atenderchamado, name='atendimento_detail'),
+      path("pagamento",views.pagamento,name="pagamento")
       
  ]
 if settings.DEBUG:

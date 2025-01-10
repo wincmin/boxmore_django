@@ -365,4 +365,7 @@ def busca_produtos(request):
 def suporte(request):
     return render(request, 'suporte.html')
 
+def pagamento(request):
+    return render(request,"pagamento.html")
+
     
