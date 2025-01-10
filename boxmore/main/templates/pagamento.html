@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pagamento</title>
+    <link rel="icon" href="static/img/loja1.png" type="image/png">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/pagamento.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Pagamento</h2>
+
+        <form>
+            <div class="lista-compras">
+                <h3>Produtos</h3>
+                <ul>
+                    <li>Produto 1 - R$ 100,00</li>
+                    <li>Produto 2 - R$ 200,00</li>
+                    <li>Produto 3 - R$ 50,00</li>
+                </ul>
+                <p>Total: R$ 350,00</p>
+            </div>
+            <div class="informacoes-cliente">
+                <h3>Preencha seus dados:</h3>
+
+                <div class="container-div">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="container-div">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                </div>
+
+                <div class="container-div">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" id="endereco" placeholder="Digite seu endereço completo" required>
+                </div>
+            </div>
+            
+            <div class="metodo-pagamento">
+                <h3>Escolha o método de pagamento:</h3>
+
+                <div class="pagamento-opcao">
+                    <input type="radio" id="paypal" name="cartao" value="visa" required>
+                    <label for="paypal">
+                        <img src="static/img/paypal.png" alt="Paypal" class="cartao-logo">
+                        Paypal
+                    </label>
+                </div>
+
+                <div class="pagamento-opcao">
+                    <input type="radio" id="mastercard" name="cartao" value="mastercard">
+                    <label for="mastercard">
+                        <img src="static/img/mastercard.png" alt="Mastercard" class="cartao-logo">
+                        Mastercard
+                    </label>
+                </div>
+
+                <div class="pagamento-opcao">
+                    <input type="radio" id="amcex" name="cartao" value="amcex">
+                    <label for="amcex">
+                        <img src="static/img/expresso-americano.png" alt="AmericanExpress" class="cartao-logo">
+                        American Express
+                    </label>
+                </div>
+            </div>
+
+            <input type="checkbox" id="toggle-modal" class="toggle-checkbox">
+
+            <button class="botao-pagar" onclick="document.getElementById('toggle-modal').checked = true;">
+                Finalizar Compra
+            </button>
+        
+            <div class="modal">
+                <div class="modal-content">
+                    <h2>Compra Finalizada!</h2>
+                    <p>Obrigado por sua compra. Seu pedido foi realizado com sucesso.</p>
+                    <label for="toggle-modal" class="botao-voltar">Voltar ao Início</label>
+                </div>
+            </div>
+        
+        </form>
+    </div>
+
+</body>
+</html>

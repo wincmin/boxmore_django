@@ -1,0 +1,323 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Ajuste no #patrao para dar mais espaçamento das bordas */
+#patrao {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #eebde3;
+  padding: 10px 60px; /* Aumentei o espaçamento das bordas */
+  color: #2c1a74;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: nowrap;
+}
+
+/* Menu de links */
+.menu-link {
+  color: #2c1a74;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Aumentei o gap entre ícone e texto */
+  font-size: 1.2em;
+  padding: 8px;
+  border-radius: 25px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Ícones do menu ainda maiores */
+.menu-link:hover {
+  background-color: #2c1a74;
+  color: white;
+}
+
+.menu-icon {
+  width: 30px; /* Aumentei ainda mais o tamanho do ícone */
+  height: 30px;
+  object-fit: contain;
+}
+
+/* Ajustes na navbar para dar mais espaçamento das bordas */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 60px; /* Aumentei o padding para afastar mais da borda */
+  background-color: #eebde3;
+  color: #2c1a74;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-title {
+  font-size: 1.5em;
+  font-family: "Lobster", serif;
+  font-weight: 400;
+  text-align: left;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Aumentei o gap entre os itens */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-right: 20px;
+  max-width: 400px;
+  gap: 10px; /* Garante que o input e o botão fiquem afastados mas alinhados */
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 25px;
+  border: 1px solid #cccccc;
+  transition: width 0.4s ease-in-out;
+}
+
+.search-bar input:focus {
+  width: 100%;
+}
+
+.search-bar button {
+  padding: 7px 15px;
+  background-color: white;
+  border: none;
+  border-radius: 25px;
+  color: #2c1a74;
+  cursor: pointer;
+  margin-left: 10px; /* Distancia o botão do input para evitar o sobreposição */
+}
+
+.search-bar button:hover {
+  background-color: #2c1a74;
+  color: white;
+}
+
+
+.menu a {
+  color: #2c1a74;
+  text-decoration: none;
+  font-size: 1.2em;
+  text-align: center;
+  margin: 0 10px;
+  padding: 8px;
+  border-radius: 25px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu a:hover {
+  background-color: #2c1a74;
+  color: white;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  background-color: #2c1a74;
+  color: white;
+  font-size: 1em;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.dropbtn:hover {
+  color: #eebde3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2c1a74;
+  min-width: 150px;
+  box-shadow: 0.4px 8px #eebde3;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #eebde3;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Banner e produtos centralizados */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  margin-top: 20px;
+  overflow: hidden;
+  height: auto;
+}
+
+.banner-image {
+  width: 70%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-out;
+}
+
+.banner-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: shadow-pop-tr 0.3s ease-out 2;
+}
+
+@keyframes shadow-pop-tr {
+  0% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+  }
+  50% {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Seção de produtos */
+.produtos-destaque {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#destaques .produtos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* Garantir que os produtos fiquem na linha e ajustem o tamanho */
+}
+
+.produto {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  width: 250px;
+  border-radius: 15px;
+  background-color: #f9f9f9;
+}
+
+.produto img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.produto h3 {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.produto p {
+  color: #2c1a74;
+  font-weight: bold;
+}
+
+.produto button {
+  padding: 8px 15px;
+  background-color: #2c1a74;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+.produto button:hover {
+  background-color: #eebde3;
+  color: #2c1a74;
+}
+
+/* Rodapé */
+.rodape {
+  background-color: #2c1a74;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.rodape .links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.rodape .links a:hover {
+  text-decoration: underline;
+}
+
+.rodape .redes-sociais a img {
+  width: 28px;
+  margin: 9px;
+  cursor: auto;
+}
+
+.modal-title {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+#m-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.modal-body input {
+  padding: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal-footer .btn {
+  margin: 0 5px;
+}

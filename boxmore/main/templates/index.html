@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxmore</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'index.css' %}">
+  <link rel="icon" href="{% static 'loja1.png' %}" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <!-- Barra de navegação -->
+  <nav class="navbar" id="patrao">
+    <div class="navbar-title">Boxmore</div>
+    
+    <!-- Barra de pesquisa -->
+    <div class="search-bar">
+      <form method="get" action="{% url 'busca_produtos' %}">
+        <input type="text" class="search-input" autocomplete="off" placeholder="Pesquise..." value="{{ request.GET.query }}">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+    </div>
+  
+    <!-- Links para perfil, carrinho e suporte -->
+    <div class="menu">
+      <!-- Link para o perfil do usuário -->
+      <a href="#"><img src="{% static 'perfil-conta.png' %}" alt="Perfil" class="menu-icon">
+      </a>
+      
+      <!-- Link para o carrinho de compras -->
+      <a href="#"><img src="{% static 'carrinho.png' %}" alt="Carrinho" class="menu-icon">
+      </a>
+
+      <!-- Link para Suporte -->
+      <a href="{% url 'suporte' %}" alt="suporte">
+        Suporte
+      </a>
+      
+    </div>
+  </nav>
+
+  <!-- Banner principal -->
+  <div class="banner">
+    <img src="{% static 'img-banner.png' %}" alt="Promoções especiais" class="banner-image">
+  </div>
+
+  <!-- Seção de produtos em promoção -->
+  <section id="destaques" class="produtos-destaque">
+    <h2>Produtos em Promoção</h2>
+    <div class="produtos">
+      {% for produto in produtos %}
+        <div class="produto">
+          <img src="{% static produto.imagem %}" alt="{{ produto.nome_produto }}">
+          <h3>{{ produto.nome_produto }}</h3>
+          <p>R$ {{ produto.preco }}</p>
+          <p>Categoria: {{ produto.categoria }}</p>
+          <p>Marca: {{ produto.marca }}</p>
+          <p>Cor: {{ produto.cor }}</p>
+          <button class="add-carrinho">
+            <a href="#">Adicionar ao Carrinho</a>
+          </button>
+        </div>
+      {% empty %}
+        <p>Nenhum produto disponível no momento.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="rodape">
+    <div class="info">
+      <h3>Boxmore</h3>
+      <p>© 2024 Todos os direitos reservados.</p>
+    </div>
+    <div class="links">
+      <a href="#">Sobre Nós</a>
+    </div>
+    <div class="redes-sociais">
+      <a href="#"><img src="{% static 'face.img' %}" alt="Facebook"></a>
+      <a href="#"><img src="{% static 'insta.img' %}" alt="Instagram"></a>
+      <a href="#"><img src="{% static 'whats.img' %}" alt="WhatsApp"></a>
+    </div>
+  </footer>
+
+</body>
+</html>
