@@ -28,7 +28,7 @@ DEBUG = True
 if DEBUG:
     bd = conecta_no_banco_de_dados()
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
+   
 
 
 # Application definition
