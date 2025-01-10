@@ -1,0 +1,65 @@
+def excluirproduto(request, id)
+    if not request.session.get(produto_id):
+else: 
+    try: 
+
+        bd =conecta_no_banco_de_dados()
+            cursor = bd.cursor()
+
+            sql = 'DELETE FROM produtos WHERE id = %(user_id)s;'
+            params = {'user_id': id}
+
+            cursor.execute(sql, params)
+            bd.commit()
+            cursor.close()
+
+            messages.success(request, 'Produto excluído com sucesso!')
+            return redirect('index')
+
+        except Exception as e:
+            print(f"Erro ao excluir produto: {e}")
+            messages.error(request, 'Falha ao excluir produto. Tente novamente mais tarde.')
+            return redirect('index')
+
+
+def editarproduto(request,id):
+    if not request.session.get('produto_id'):
+        return redirect('/')
+    else:
+        id_produto = id
+        bd = conecta_no_banco_de_dados()
+        cursor = bd.cursor()
+        cursor.execute("""
+            SELECT id, nome_produto, preco, marca
+            FROM produtos
+            WHERE id = %s;
+        """, (id,))
+        dados_produtos = cursor.fetchone()
+        cursor.close()
+        bd.close()
+        if request.method == 'POST':
+            nome = request.POST.get('nome_produto')
+            email = request.POST.get('marca')
+            senha = request.POST.get('marca')    
+            if not all([nome, email, senha]):
+                return render(request, 'usuarios.html')
+            bd = conecta_no_banco_de_dados()
+            cursor = bd.cursor()
+            sql = (
+                """
+                UPDATE usuarios
+                SET nome = %s, email = %s, senha = %s
+                WHERE id = %s;
+                """
+            )
+            values = (nome, email, senha, id)
+            cursor.execute(sql, values)
+            bd.commit()  # Assumindo que você tenha gerenciamento de transações
+            cursor.close()
+            bd.close()
+
+            # Redirecione para a página de sucesso ou exiba a mensagem de confirmação
+            return redirect('paginainicial')     
+
+        # Exiba o formulário (assumindo lógica de renderização)
+        return render(request, 'editarusuario.html',{'id': id_usuario})

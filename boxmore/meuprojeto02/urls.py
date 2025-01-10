@@ -30,11 +30,17 @@ urlpatterns = [
      path('cadastro/', views.cadastro, name='cadastro'),
      path('editarusuario/<int:id>', views.editarusuario, name='editarusuario'),
      path('excluirususario/<int:id>/', views.excluirususario, name='excluirususario'),
-      
-      
+
+
+    # path('carrinho/adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
+    # path('carrinho/remover/<int:produto_id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
+    # path('carrinho/', views.exibir_carrinho, name='exibir_carrinho'),
+
+
+      path('pagamento/', views.pagamento, name='pagamento'),
       path('contatos/', views.contatos, name='contatos'),
       path('usuarios/', views.usuarios, name='usuarios'),
-      path('', views.index, name='index'),
+      path('index', views.index, name='index'),
       path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
       path('suporte/', views.suporte, name='suporte'),
       path('admin/', admin.site.urls),

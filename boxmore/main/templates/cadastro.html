@@ -1,30 +1,31 @@
-{% extends 'template.html' %}
+{% comment %} {% extends 'template.html' %} {% endcomment %}
 
 {% block titulo %}
-Formulário de Cadastro
+Login do Usuário
 {% endblock %}
 
 {% block conteudo %}
 {% load static %}
-
+<link rel="stylesheet" href="{% static 'style.css' %}">
 <body style="text-align: center; font-family: Segoe UI;">
     <div>
-        <img class="imgpython" src="{% static 'giphy.gif' %}" alt="">
+        {% comment %} <img class="imgpython" src="{% static 'giphy.gif' %}" alt=""> {% endcomment %}
         <h1 style="text-align: center; font-size: 25px; font-family: Segoe UI;">
             Por favor, crie a sua conta
         </h1>
-        
+    <div class='container'>
+
         <form method="POST" action="/cadastro/">
             {% csrf_token %}
             
             <!-- Nome -->
             <div>
-                <input style="margin: 5px" class="inputlogin" type="text" name="nome" placeholder="Nome">
+                <input style="margin: 5px" class="inputlogin" autocomplete="off" type="text" name="nome" placeholder="Nome">
             </div>
             
             <!-- E-mail -->
             <div>
-                <input style="margin: 5px" class="inputlogin" type="email" name="email" placeholder="E-mail">
+                <input style="margin: 5px" class="inputlogin"  autocomplete="off" type="email" name="email" placeholder="E-mail">
             </div>
             
             <!-- Senha -->
@@ -47,6 +48,8 @@ Formulário de Cadastro
             <br>
             <button class="botaologin" type="submit">Cadastrar</button>
         </form>
+
+    </div>
         
         <script>
             // Limpa os campos do formulário ao entrar na tela

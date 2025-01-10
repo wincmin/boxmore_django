@@ -284,7 +284,7 @@ def cadastro(request):
             bd.close()
 
             # Redirecione para a página de sucesso ou exiba a mensagem de confirmação
-            return redirect('paginainicial')     
+            return redirect('index')     
 
         # Exiba o formulário (assumindo lógica de renderização)
         return render(request, 'cadastro.html')            
@@ -349,6 +349,8 @@ def contato(request):
         return render(request, 'contato.html', {'form': form})
     
 
+def pagamento(request):
+    return render(request, 'pagamento.html')
 
 from .models import Produto  
 
@@ -365,4 +367,51 @@ def busca_produtos(request):
 def suporte(request):
     return render(request, 'suporte.html')
 
-    
+# from django.shortcuts import redirect, get_object_or_404
+# from .models import Produto
+
+# def adicionar_ao_carrinho(request, produto_id):
+#     # Verifica se o carrinho existe na sessão
+#     carrinho = request.session.get('carrinho', {})
+
+#     # Verifica se o produto existe no banco de dados
+#     produto = get_object_or_404(Produto, id=produto_id)
+
+#     # Adiciona ou incrementa a quantidade do produto no carrinho
+#     if str(produto_id) in carrinho:
+#         carrinho[str(produto_id)]['quantidade'] += 1
+#     else:
+#         carrinho[str(produto_id)] = {
+#             'nome': produto.nome_produto,
+#             'preco': str(produto.preco),  # Armazena como string para evitar problemas de serialização
+#             'quantidade': 1,
+#         }
+
+#     request.session['carrinho'] = carrinho
+#     messages.success(request, f"Produto {produto.nome_produto} adicionado ao carrinho.")
+#     return redirect('pagina_produtos')  # Redireciona para a página de produtos ou carrinho
+
+# def remover_do_carrinho(request, produto_id):
+#     # Obtém o carrinho da sessão
+#     carrinho = request.session.get('carrinho', {})
+
+#     # Verifica se o produto está no carrinho
+#     if str(produto_id) in carrinho:
+#         # Remove o produto ou decrementa sua quantidade
+#         if carrinho[str(produto_id)]['quantidade'] > 1:
+#             carrinho[str(produto_id)]['quantidade'] -= 1
+#         else:
+#             del carrinho[str(produto_id)]
+
+#         # Atualiza o carrinho na sessão
+#         request.session['carrinho'] = carrinho
+#         messages.success(request, "Produto removido do carrinho.")
+#     else:
+#         messages.error(request, "Produto não encontrado no carrinho.")
+
+#     return redirect('pagina_carrinho')  # Redireciona para a página do carrinho
+
+# def exibir_carrinho(request):
+#     carrinho = request.session.get('carrinho', {})
+#     total = sum(float(item['preco']) * item['quantidade'] for item in carrinho.values())
+#     return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total})

@@ -96,16 +96,17 @@ body {
   transition: width 0.4s ease-in-out;
 }
 
-.search-bar input:focus {
+/* .search-bar input:focus {
   width: 100%;
-}
+} */
 
 .search-bar button {
+  /* display: block; */
   padding: 7px 15px;
   background-color: white;
   border: none;
   border-radius: 25px;
-  color: #2c1a74;
+  /* color: #2c1a74; */
   cursor: pointer;
   margin-left: 10px; /* Distancia o botão do input para evitar o sobreposição */
 }

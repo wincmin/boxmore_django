@@ -1,109 +1,25 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boxmore</title>
-    {% load static %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}static/carrinho.css">
-      <link rel="icon" href="static/img/loja1.png" type="image/png">
-    <link rel="stylesheet" href="{% static 'css/carrinho.css' %}">
-</head>
-<body>
-
-    <h1>Carrinho de Compras</h1>
-
-    <p>O carrinho está vazio. </p>
-
-
-    </div>
-
-    <button class="botao-carrinho" id="botaoMostrarCarrinho">Mostrar Carrinho</button>
-
-    </button>
-
-
-    <div class="carrinho" id="carrinho">
-        <h2>Itens no Carrinho</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Preço</th>
-                    <th>Total</th>
-                   
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="produto-calca">
-                    <td>Calça Jeans</td>
-                    <td><input type="number" value="1" min="1" max="20" class="quantidade"></td>
-                    <td>R$ 50,00</td>
-                    <td class="total">R$ 50,00</td>
-                </tr>
-                <tr class="produto-camiseta">
-                    <td>Camiseta</td>
-                    <td><input type="number" value="1" min="1" max="20" class="quantidade"></td>
-                    <td>R$ 10,99</td>
-                    <td class="total">R$ 10,00</td>
-                </tr>
-                <tr class="produto-jaqueta">
-                    <td>Jaqueta</td>
-                    <td><input type="number" value="1" min="1" max="20" class="quantidade"></td>
-                    <td>R$ 4,77</td>
-                    <td class="total">R$ 120,00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="detalhes-compra" id="detalhesCompra">
-        <p><strong>Subtotal:</strong> R$ <span id="subtotal">0,00</span></p>
-        <button class="botao-finalizar">
-            <a href= "{% url 'pagamento' %}">Pagar</a>
-        </button>
-        <button class="botao-continuar">
-            <a href= "{% url 'home' %}">Continuar comprando</a>
-        </button>
-    </div>
- <script>
-
-        const botaoMostrarCarrinho = document.getElementById('botaoMostrarCarrinho');
-        const carrinho = document.getElementById('carrinho');
-        const detalhesCompra = document.getElementById('detalhesCompra');
-
-        botaoMostrarCarrinho.addEventListener('click', () => {
-            const estaVisivel = carrinho.style.display === 'block';
-            carrinho.style.display = estaVisivel ? 'none' : 'block';
-            detalhesCompra.style.display = estaVisivel ? 'none' : 'block';
-            botaoMostrarCarrinho.textContent = estaVisivel ? 'Mostrar Carrinho' : 'Fechar Carrinho';
-        });
-
-
-        const inputsQuantidade = document.querySelectorAll('.quantidade');
-        const subtotalSpan = document.getElementById('subtotal');
-
-        inputsQuantidade.forEach(input => {
-            input.addEventListener('input', function () {
-                const row = input.closest('tr');
-                const precoUnitario = parseFloat(row.cells[2].textContent.replace('R$ ', '').replace(',', '.'));
-                const quantidade = parseInt(input.value);
-                const total = precoUnitario * quantidade;
-                row.querySelector('.total').textContent = `R$ ${total.toFixed(2)}`;
-
-                atualizarSubtotal();
-            });
-        });
-
-        function atualizarSubtotal() {
-            let subtotal = 0;
-            document.querySelectorAll('.total').forEach(totalCell => {
-                const total = parseFloat(totalCell.textContent.replace('R$ ', '').replace(',', '.'));
-                subtotal += total;
-            });
-            subtotalSpan.textContent = subtotal.toFixed(2);
-        }
-    </script>
-</body>
-</html>
+<h2>Carrinho de Compras</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for id, item in carrinho.items %}
+        <tr>
+            <td>{{ item.nome }}</td>
+            <td>R$ {{ item.preco }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>
+                <a href="{% url 'adicionar_ao_carrinho' id %}">Adicionar</a>
+                <a href="{% url 'remover_do_carrinho' id %}">Remover</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>Total: R$ {{ total }}</p>
