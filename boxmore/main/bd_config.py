@@ -3,11 +3,9 @@ import mysql.connector
 def conecta_no_banco_de_dados():
     # Conectar ao servidor MySQL
     cnx = mysql.connector.connect(host='127.0.0.1', user='root', password='')
-
-    # Criar o cursor para interagir com o banco de dados
     cursor = cnx.cursor()
 
-    # Verificar se o banco de dados 'aula06' existe
+    # Verificar se o banco de dados 'boxmore_banco' existe
     cursor.execute('SELECT COUNT(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = "boxmore_banco";')
     num_results = cursor.fetchone()[0]
 
@@ -18,8 +16,9 @@ def conecta_no_banco_de_dados():
     if num_results == 0:
         # Conectar-se novamente ao servidor MySQL para criar o banco de dados
         cnx = mysql.connector.connect(host='127.0.0.1', user='root', password='')
-
         cursor = cnx.cursor()
+
+        # Criar o banco de dados
         cursor.execute('CREATE DATABASE boxmore_banco;')
         cnx.commit()
 
@@ -30,11 +29,9 @@ def conecta_no_banco_de_dados():
             password='',
             database='boxmore_banco'  # Especificar o banco de dados
         )
-
         cursor = cnx.cursor()
 
-
-        # Criar a tabela de usuarios com a coluna 'perfil'
+        # Criar as tabelas
         cursor.execute('''
             CREATE TABLE usuarios (
                 id INT AUTO_INCREMENT PRIMARY KEY, 
@@ -56,8 +53,6 @@ def conecta_no_banco_de_dados():
             );
         ''')
 
-
-
         # Inserir dados iniciais na tabela 'usuarios'
         nome = "Camille"
         email = "camz@gmail.com"
@@ -68,26 +63,24 @@ def conecta_no_banco_de_dados():
         cursor.execute(sql, valores)
         cnx.commit()
 
-        cnx.close()
-
-
-        # Inserir dados iniciais na tabela 'Produto'
-        nome_produto = "Fone Bluetooth JBL"
-        preco = 329.99
+        # Inserir dados iniciais na tabela 'produto'
+        nome_produto = "Fone Bluetooth Preto"
+        preco = 139.99
         marca = "JBL"
-        imagem = "static/fone-bluetooth.jpg"
+        imagem = "static/images/fone-bluetooth.jpg"
 
-        sql = "INSERT INTO Produto (nome_produto, preco, marca, imagem) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO produto (nome_produto, preco, marca, imagem) VALUES (%s, %s, %s, %s)"
         valores = (nome_produto, preco, marca, imagem)
 
         cursor.execute(sql, valores)
         cnx.commit()
 
+        # Fechar a conexão
+        cursor.close()
         cnx.close()
 
-        
     try:
-        # Conectar ao banco de dados 'aula06' existente
+        # Conectar ao banco de dados 'boxmore_banco' existente
         bd = mysql.connector.connect(
             host='127.0.0.1',
             user='root',

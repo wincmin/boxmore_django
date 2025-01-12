@@ -1,40 +1,64 @@
-{% comment %} {% extends 'template.html' %} {% endcomment %}
 
-{% block titulo %}
-Login do Usuário
-{% endblock %}
-
-{% block conteudo %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
+<head>
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="icon" href="{% static 'loja1.png' %}" type="image/png">
+    <style>
+        /* Centralizar o fundo e garantir que ocupe toda a altura da tela */
+        body {
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+
+        /* Garantir que o container do cadastro fique centralizado */
+        .cadastro-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .titulo-container h1 {
+            font-size: 35px; /* Tamanho maior da fonte */
+            font-family: 'Segoe UI', sans-serif; /* Fonte específica */
+            margin: 0; /* Remove qualquer margem padrão */
+            color: #333; /* Cor do título */
+        }
+
+    </style>
+</head>
+
 <body style="text-align: center; font-family: Segoe UI;">
-    <div>
-        {% comment %} <img class="imgpython" src="{% static 'giphy.gif' %}" alt=""> {% endcomment %}
-        <h1 style="text-align: center; font-size: 25px; font-family: Segoe UI;">
-            Por favor, crie a sua conta
-        </h1>
-    <div class='container'>
+    <div class="cadastro-container">
+        <h1>Por favor, crie sua conta</h1>
 
         <form method="POST" action="/cadastro/">
             {% csrf_token %}
             
             <!-- Nome -->
             <div>
-                <input style="margin: 5px" class="inputlogin" autocomplete="off" type="text" name="nome" placeholder="Nome">
+                <input class="inputlogin" autocomplete="off" type="text" name="nome" placeholder="Nome">
             </div>
             
             <!-- E-mail -->
             <div>
-                <input style="margin: 5px" class="inputlogin"  autocomplete="off" type="email" name="email" placeholder="E-mail">
+                <input class="inputlogin" autocomplete="off" type="email" name="email" placeholder="E-mail">
             </div>
             
             <!-- Senha -->
             <div>
-                <input style="margin: 5px" class="inputlogin" type="password" name="senha" placeholder="Senha">
+                <input class="inputlogin" type="password" name="senha" placeholder="Senha">
             </div>
             
             <!-- Perfil (Admin ou Usuário) -->
-            <div class="radio-group">
+            <div class="radio-group" style="margin-bottom: 15px;">
                 <label for="admin">
                     <input type="radio" id="admin" name="perfil" value="administrador" style="margin-right: 8px;">
                     Administrador
@@ -45,20 +69,11 @@ Login do Usuário
                 </label>
             </div>
             
-            <br>
             <button class="botaologin" type="submit">Cadastrar</button>
         </form>
+        <h3>Já possui conta?</h3>
+        <a class="botao" href="{% url 'login' %}">Entre aqui</a>
 
     </div>
-        
-        <script>
-            // Limpa os campos do formulário ao entrar na tela
-            $(document).ready(function() {
-                $('input[name="nome"]').val('');
-                $('input[name="email"]').val('');
-                $('input[name="senha"]').val('');
-            });
-        </script>
-    </div>
+
 </body>
-{% endblock %}

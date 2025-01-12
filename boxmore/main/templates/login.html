@@ -6,8 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" href="{% static 'loja1.png' %}" type="image/png">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
+
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fc;
@@ -29,11 +33,6 @@
             max-width: 400px;
         }
 
-        .imgpython {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
-
         h1 {
             font-size: 25px;
             font-family: 'Segoe UI';
@@ -41,8 +40,12 @@
             margin-bottom: 30px;
         }
 
+        .botaologin {
+            color:#6A8B94ff
+        }
+
         .botaologin:hover {
-            background-color: #0056b3;
+            background-color: rgb(194, 139, 219);
         }
 
         .botao {
@@ -54,7 +57,7 @@
         }
 
         .botao:hover {
-            background-color: #0056b3;
+            background-color: #6A8B94ff;
         }
 
         /* Desabilitar botão por padrão */
@@ -62,13 +65,21 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+
+        .logotipo{
+            width: 17%;
+            height: auto;
+
+        }
+
+
     </style>
 </head>
 
 <body>
     <div class="login-container">
-        <img class="imgpython" src="{% static 'giphy.gif' %}" alt="GIF de login">
-        <h1>Sistema de Chamados Django</h1>
+        <a href="#"><img src="{% static 'icon-camisa.png' %}" class="logotipo" alt="icon"></a>
+        <h1>Faça seu login:</h1>
 
         <form method="POST">
             {% csrf_token %}
@@ -77,7 +88,8 @@
             <button type="submit" class="botaologin" id="submit-button" disabled>Entrar</button>
         </form>
 
-        <a class="botao" href="/contato">Contato</a>
+        <a class="botao" href="{% url 'cadastro' %}">Cadastro</a>
+
     </div>
 
     <script>

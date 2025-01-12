@@ -21,37 +21,36 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
-   #rota, view responsavel nome de referencia
-    # path('guia', views.index, name='index'),
-    # path('sobre',views.sobre,name='sobre'),
-     path('contato/', views.contato, name='contato'),
     
-     
-     path('cadastro/', views.cadastro, name='cadastro'),
      path('editarusuario/<int:id>', views.editarusuario, name='editarusuario'),
+     path('contato', views.contato, name='contato'),
+     path('cadastro/', views.cadastro, name='cadastro'),
      path('excluirususario/<int:id>/', views.excluirususario, name='excluirususario'),
+     path('contatos/', views.contatos, name='contatos'),
+     path('usuarios/', views.usuarios, name='usuarios'),
+     path('admin/', admin.site.urls),
+     path('accounts/', include('django.contrib.auth.urls')),
+     path('atendimento/<int:id>/',views.atenderchamado, name='atendimento_detail'),
 
-
-    # path('carrinho/adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
-    # path('carrinho/remover/<int:produto_id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
-    # path('carrinho/', views.exibir_carrinho, name='exibir_carrinho'),
-
-
+      path('login/', views.login, name='login'),
+      path('logout/', views.logout, name='logout'),
       path('pagamento/', views.pagamento, name='pagamento'),
-      path('contatos/', views.contatos, name='contatos'),
-      path('usuarios/', views.usuarios, name='usuarios'),
-      path('index', views.index, name='index'),
+      path('', views.index, name='index'),
+      path('adicionar/', views.adicionar_produto, name='adicionar_produto'),
+      path('remover/<int:id>/', views.remover_produto, name='remover_produto'),
       path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
       path('suporte/', views.suporte, name='suporte'),
-      path('admin/', admin.site.urls),
-    #   path('paginainicial', views.paginainicial, name='paginainicial'),
-        path('accounts/', include('django.contrib.auth.urls')),
-      path('atendimento/<int:id>/',views.atenderchamado, name='atendimento_detail'),
+      path('carrinho/', views.carrinho, name='carrinho')
+
       
- ]
+ ] 
+
 if settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    urlpatterns += staticfiles_urlpatterns()
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+# urlpatterns += staticfiles_urlpatterns()
 
 
 #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

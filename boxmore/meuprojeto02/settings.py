@@ -27,8 +27,13 @@ SECRET_KEY = 'django-insecure-+i^60ggi%ggt#n3yr9dni0437f3yi-n#&!&i64-y$xg&109k3q
 DEBUG = True
 if DEBUG:
     bd = conecta_no_banco_de_dados()
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = []
 
+
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Application definition
@@ -132,6 +137,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Isso só é necessário para produção, se você estiver usando o Django com servidor de produção.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

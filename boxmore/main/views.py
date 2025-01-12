@@ -16,7 +16,9 @@ from django.http import HttpResponse, JsonResponse  # 'HttpResponse' para respos
 from django.contrib import messages  # Usado para mostrar mensagens de feedback ao usuário, como sucesso ou erro
 
 def login(request):
-    request.session['usuario_id'] = ""
+    request.session['usuario_id'] = None
+    request.session['perfil'] = None
+    
 
     # Se for uma solicitação POST, valida o login
     if request.method == 'POST':
@@ -45,7 +47,8 @@ def login(request):
             # Se o usuário for encontrado
             if usuario:
                 request.session['usuario_id'] = usuario[0]  # Salva o ID do usuário na sessão
-                return redirect('paginainicial')  # Redireciona para a página inicial
+                request.session['perfil'] = usuario[4]
+                return redirect('index')  # Redireciona para a página inicial
 
             else:
                 # Se não encontrar o usuário, exibe uma mensagem de erro
@@ -57,134 +60,6 @@ def login(request):
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
-# def login(request):
-#     request.session['usuario_id'] =""
-    
-#     try:
-#         # Tentar estabelecer conexão com o banco de dados (dentro do bloco POST)
-#         if request.method == 'POST':
-#             bd = conecta_no_banco_de_dados()
-
-#             # Extrair credenciais do usuário do formulário enviado
-#             email = request.POST['username']
-#             senha = request.POST['password']
-#             # usuario1 = authenticate(username=request.POST['username'], password=request.POST['password'])
-#              # Validar as credenciais
-#             cursor = bd.cursor()
-#             cursor.execute("""
-#                         SELECT *
-#                         FROM usuarios
-#                         WHERE email = %s AND senha = %s;
-#                     """, (email, senha,))
-#             usuario = cursor.fetchone()
-#             cursor.close()
-#             bd.close()
-#             if usuario:
-#                 request.session['usuario_id'] = usuario[0]  # Iniciar sessão do usuário
-                
-              
-#                 return redirect('paginainicial')                     
-#             else:
-#                 print('Email ou senha inválidos.')
-#                     # Autenticação falhou, exibir mensagem de erro
-#                 mensagem_erro = 'Email ou senha inválidos.'
-#                 return render(request, 'login.html', {'mensagem_erro': mensagem_erro})
-             
-
-#         else:
-#             # Se não for uma solicitação POST, renderizar o formulário de login
-#             return render(request, 'login.html')
-        
-
-#     except Exception as e:
-#         # Se ocorrer um erro de conexão, exibir mensagem de erro
-#         mensagem_erro = f"Erro ao conectar ao banco de dados: {e}"
-#         return render(request, 'login.html', {'mensagem_erro': mensagem_erro})
-def paginainicial(request):
-        if not request.session.get('usuario_id'):
-            return redirect('/')
-        else:
-
-            # Obtenha o ID do usuário armazenado na sessão
-            usuario_id = request.session['usuario_id']
-
-            # Conecte-se ao banco de dados e recupere o nome do usuário
-            bd = conecta_no_banco_de_dados()
-            cursor = bd.cursor()
-            
-            # Execute a consulta para buscar o nome do usuário
-            cursor.execute('SELECT nome FROM usuarios WHERE id = %s;', (usuario_id,))
-            usuario = cursor.fetchone()
-            
-            cursor.close()
-            bd.close()
-
-            if usuario:
-                nome_usuario = usuario[0]  # Assumindo que "nome" está na primeira posição
-            else:
-                nome_usuario = 'Usuário não encontrado'
-
-            # Passe o nome do usuário para o template
-            return render(request, 'paginainicial.html', {'nome_usuario': nome_usuario})
-def contatos(request):
-     if not request.session.get('usuario_id'):
-            return redirect('/')
-     else:
-        bd = conecta_no_banco_de_dados()
-        cursor = bd.cursor()
-        cursor.execute('SELECT * FROM contatos where situacao!="Atendimento" AND situacao!="Finalizado";')
-        contatos = cursor.fetchall()
-        
-        # Renderize o template HTML com os contatos recuperados
-        return render(request, 'contatos.html', {"contatos": contatos})
-def usuarios(request):
-    if not request.session.get('usuario_id'):
-            return redirect('/')
-    else:
-        bd = conecta_no_banco_de_dados()
-        cursor = bd.cursor()
-        cursor.execute('SELECT * FROM usuarios;')
-        usuarios = cursor.fetchall()
-        
-        # Renderize o template HTML com os contatos recuperados
-        return render(request, 'usuarios.html', {"usuarios": usuarios})
-def atenderchamado(request, id):
-     if not request.session.get('usuario_id'):
-            return redirect('/')
-     else:
-        usuario_id = request.session['usuario_id']
-
-        try:
-            # Connect to the database
-            bd = conecta_no_banco_de_dados()
-            cursor =  bd.cursor()
-
-            # Update contato's status
-            sql = 'UPDATE contatos SET situacao = %s WHERE id_contato = %s;'
-            values = ("Atendimento", int(id))
-            cursor.execute(sql, values)
-
-            # Insert record into usuario_contato table
-            sql = """
-                INSERT INTO usuario_contato (usuario_id, contato_id, situacao)
-                VALUES (%s, %s, %s);
-            """
-            values = (int(usuario_id), int(id), "Atendimento")
-            cursor.execute(sql, values)
-
-            # Commit changes and close connection
-            bd.commit()
-            bd.close()
-
-            # Successful update
-            return redirect('/paginainicial')
-
-        except Exception as e:
-            # Handle errors
-            print(f"Erro ao atender chamado: {e}")
-            return redirect('/contatos')  
-
-
 
 
 def excluirususario(request,id):
@@ -205,12 +80,13 @@ def excluirususario(request,id):
             cursor.close()
 
             messages.success(request, 'Usuário excluído com sucesso!')
-            return redirect('paginainicial')
+            return redirect('index')
 
         except Exception as e:
             print(f"Erro ao excluir usuário: {e}")
             messages.error(request, 'Falha ao excluir usuário. Tente novamente mais tarde.')
-            return redirect('pagina_inicial')
+            return redirect('index')
+        
 def editarusuario(request,id):
     if not request.session.get('usuario_id'):
         return redirect('/')
@@ -248,13 +124,14 @@ def editarusuario(request,id):
             bd.close()
 
             # Redirecione para a página de sucesso ou exiba a mensagem de confirmação
-            return redirect('paginainicial')     
+            return redirect('index')     
 
         # Exiba o formulário (assumindo lógica de renderização)
         return render(request, 'editarusuario.html',{'id': id_usuario})
+    
 def cadastro(request):
-    if not request.session.get('usuario_id'):
-        return redirect('/')
+    if request.session.get('usuario_id'):
+        return redirect('index')
     else:
         if request.method == 'POST':
             nome = request.POST.get('nome')
@@ -264,9 +141,11 @@ def cadastro(request):
           
       
             # Valide a entrada (assumindo lógica de validação)
-            if not all([nome, email, senha,perfil]):
+            if not all([nome, email, senha, perfil]):
+                return render(request, 'cadastro.html', {'erro': 'Todos os campos são obrigatórios!'})
+
                 # Lide com erros de validação (por exemplo, exiba mensagens de erro)
-                return render(request, 'cadastro.html')
+                
 
             # Atualize os dados do usuário se a validação for aprovada
             bd = conecta_no_banco_de_dados()
@@ -291,19 +170,164 @@ def cadastro(request):
 
 
 
+def carrinho(request):
+    return render(request, 'carrinho.html')
 
 
+from django.shortcuts import redirect
+
+def logout(request):
+    # Limpa a sessão e redireciona para a página inicial
+    request.session.flush()
+    return redirect('index')  # Redireciona para a página inicial (ou outra página desejada)
+
+from django.shortcuts import render
+from .models import Produto  # Certifique-se de importar o modelo de Produto
 
 def index(request):
-    # if not request.session.get('usuario_id'):
-    #     return redirect('/')
-    # else:
-        return render(request, 'index.html')
+    usuario_logado = None  # Inicializa como None
+
+    # Verifica se o usuário está logado (com base na sessão)
+    if request.session.get('usuario_id'):
+        usuario_id = request.session['usuario_id']
+        bd = conecta_no_banco_de_dados()
+        cursor = bd.cursor()
+        cursor.execute("SELECT * FROM usuarios WHERE id = %s;", (usuario_id,))
+        usuario = cursor.fetchone()
+        cursor.close()
+        bd.close()
+
+        if usuario:
+            usuario_logado = usuario[1]  # Nome do usuário
+
+    # Busca todos os produtos ou filtra conforme necessário
+  # Você pode adicionar filtros aqui, se necessário
+
+    # Passa as variáveis para o template
+    return render(request, 'index.html', {'usuario_logado': usuario_logado})
+    
+def lista_produtos(request):
+        produtos = Produto.objects.all()
+        return render(request, 'produtos/lista_produtos.html', {'produtos': produtos})
+
+
 def sobre(request):
     if not request.session.get('usuario_id'):
          return redirect('/')
     else:
         return render(request, 'Sobre/sobre.html')
+
+def pagamento(request):
+    return render(request, 'pagamento.html')
+
+from .models import Produto  
+
+def busca_produtos(request):
+    query = request.GET.get('query', '') 
+    produtos = Produto.objects.all()  
+
+    if query:
+
+        produtos = produtos.filter(nome_produto__icontains=query)
+
+    return render(request, 'index.html', {'produtos': produtos, 'query': query})
+
+def suporte(request):
+    return render(request, 'suporte.html')
+
+
+def paginainicial(request):
+        if not request.session.get('usuario_id'):
+            return redirect('/')
+        else:
+
+            # Obtenha o ID do usuário armazenado na sessão
+            usuario_id = request.session['usuario_id']
+
+            # Conecte-se ao banco de dados e recupere o nome do usuário
+            bd = conecta_no_banco_de_dados()
+            cursor = bd.cursor()
+            
+            # Execute a consulta para buscar o nome do usuário
+            cursor.execute('SELECT nome FROM usuarios WHERE id = %s;', (usuario_id,))
+            usuario = cursor.fetchone()
+            
+            cursor.close()
+            bd.close()
+
+            if usuario:
+                nome_usuario = usuario[0]  # Assumindo que "nome" está na primeira posição
+            else:
+                nome_usuario = 'Usuário não encontrado'
+
+            # Passe o nome do usuário para o template
+            return render(request, 'paginainicial.html', {'nome_usuario': nome_usuario})
+        
+def contatos(request):
+     if not request.session.get('usuario_id'):
+            return redirect('/')
+     else:
+        bd = conecta_no_banco_de_dados()
+        cursor = bd.cursor()
+        cursor.execute('SELECT * FROM contatos where situacao!="Atendimento" AND situacao!="Finalizado";')
+        contatos = cursor.fetchall()
+        
+        # Renderize o template HTML com os contatos recuperados
+        return render(request, 'contatos.html', {"contatos": contatos})
+     
+def usuarios(request):
+    # Verifique se o usuário está logado e se é administrador
+    if request.session.get('perfil') != 'administrador':  # Verifique se o perfil é 'admin'
+        return redirect('index')  # Se não for admin, redireciona para a página inicial
+
+    # Se for admin, execute a lógica de exibir os usuários
+    bd = conecta_no_banco_de_dados()
+    cursor = bd.cursor()
+    cursor.execute('SELECT * FROM usuarios;')
+    usuarios = cursor.fetchall()
+    cursor.close()
+    bd.close()
+
+    return render(request, 'usuarios.html', {"usuarios": usuarios})
+
+        
+    
+def atenderchamado(request, id):
+     if not request.session.get('usuario_id'):
+            return redirect('/')
+     else:
+        usuario_id = request.session['usuario_id']
+
+        try:
+            # Connect to the database
+            bd = conecta_no_banco_de_dados()
+            cursor =  bd.cursor()
+
+            # Update contato's status
+            sql = 'UPDATE contatos SET situacao = %s WHERE id_contato = %s;'
+            values = ("Atendimento", int(id))
+            cursor.execute(sql, values)
+
+            # Insert record into usuario_contato table
+            sql = """
+                INSERT INTO usuario_contato (usuario_id, contato_id, situacao)
+                VALUES (%s, %s, %s);
+            """
+            values = (int(usuario_id), int(id), "Atendimento")
+            cursor.execute(sql, values)
+
+            # Commit changes and close connection
+            bd.commit()
+            bd.close()
+
+            # Successful update
+            return redirect('/paginainicial')
+
+        except Exception as e:
+            # Handle errors
+            print(f"Erro ao atender chamado: {e}")
+            return redirect('/contatos')  
+
 def contato(request):
     if request.method == 'POST':
         form = ContatoForm(request.POST)
@@ -348,70 +372,3 @@ def contato(request):
         form = ContatoForm()
         return render(request, 'contato.html', {'form': form})
     
-
-def pagamento(request):
-    return render(request, 'pagamento.html')
-
-from .models import Produto  
-
-def busca_produtos(request):
-    query = request.GET.get('query', '') 
-    produtos = Produto.objects.all()  
-
-    if query:
-
-        produtos = produtos.filter(nome_produto__icontains=query)
-
-    return render(request, 'index.html', {'produtos': produtos, 'query': query})
-
-def suporte(request):
-    return render(request, 'suporte.html')
-
-# from django.shortcuts import redirect, get_object_or_404
-# from .models import Produto
-
-# def adicionar_ao_carrinho(request, produto_id):
-#     # Verifica se o carrinho existe na sessão
-#     carrinho = request.session.get('carrinho', {})
-
-#     # Verifica se o produto existe no banco de dados
-#     produto = get_object_or_404(Produto, id=produto_id)
-
-#     # Adiciona ou incrementa a quantidade do produto no carrinho
-#     if str(produto_id) in carrinho:
-#         carrinho[str(produto_id)]['quantidade'] += 1
-#     else:
-#         carrinho[str(produto_id)] = {
-#             'nome': produto.nome_produto,
-#             'preco': str(produto.preco),  # Armazena como string para evitar problemas de serialização
-#             'quantidade': 1,
-#         }
-
-#     request.session['carrinho'] = carrinho
-#     messages.success(request, f"Produto {produto.nome_produto} adicionado ao carrinho.")
-#     return redirect('pagina_produtos')  # Redireciona para a página de produtos ou carrinho
-
-# def remover_do_carrinho(request, produto_id):
-#     # Obtém o carrinho da sessão
-#     carrinho = request.session.get('carrinho', {})
-
-#     # Verifica se o produto está no carrinho
-#     if str(produto_id) in carrinho:
-#         # Remove o produto ou decrementa sua quantidade
-#         if carrinho[str(produto_id)]['quantidade'] > 1:
-#             carrinho[str(produto_id)]['quantidade'] -= 1
-#         else:
-#             del carrinho[str(produto_id)]
-
-#         # Atualiza o carrinho na sessão
-#         request.session['carrinho'] = carrinho
-#         messages.success(request, "Produto removido do carrinho.")
-#     else:
-#         messages.error(request, "Produto não encontrado no carrinho.")
-
-#     return redirect('pagina_carrinho')  # Redireciona para a página do carrinho
-
-# def exibir_carrinho(request):
-#     carrinho = request.session.get('carrinho', {})
-#     total = sum(float(item['preco']) * item['quantidade'] for item in carrinho.values())
-#     return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total})

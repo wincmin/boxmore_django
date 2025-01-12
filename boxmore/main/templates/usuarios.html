@@ -1,17 +1,23 @@
 {% extends "template.html" %}
 {%block titulo%}
-Usuários TI
+<title>Lista de usuarios</title>
+
 {%endblock%}
 {% block conteudo%}
-{% load static %}
-    <h2 style="text-align: center; font-size: 25px; font-family: Segoe UI;">Usuários</h2>
+
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'loja1.png' %}" type="image/png">
+</head>
+
+    <h2 style="text-align: center; font-size: 25px; font-family: Segoe UI;">Usuários Cadastrados</h2>
    
     <table>
       <thead>
           <tr>
               <th>Nome</th>
               <th>Email</th>
-              <th>Ações</th>
+              <th>Perfil</th>
           </tr>
       </thead>
 
@@ -20,6 +26,7 @@ Usuários TI
               <tr>
                   <td>{{ usuario.1 }}</td>
                   <td>{{ usuario.2 }}</td>
+                  <td>{{ usuario.4 }}</td>
                   <td>
                     <a href="/excluirususario/{{ usuario.0}}" class="excluir">Excluir</a>
                     <a href="/editarusuario/{{ usuario.0}}" class="editar">Editar</a>
@@ -29,8 +36,4 @@ Usuários TI
           {% endfor %}
       </tbody>
   </table>
-    <div class="divimg">
-        <img class="imgpython"  src="{% static 'giphy.gif' %}" alt="">
-              </div>
-            
 {%endblock%}

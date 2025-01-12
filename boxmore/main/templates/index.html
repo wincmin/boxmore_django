@@ -10,13 +10,66 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+
+    .menu-icon:disabled{
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .logout-link {
+      display: block;
+      margin-top: 10px; 
+      text-align: center;
+      color: #000; 
+      text-decoration: none; 
+    }
+
+    .logout-link:hover {
+      text-decoration: underline;
+    }
+
+    .perfil-container {
+      justify-content: right; /* Alinha tudo ao centro */
+    }
+
+    .usuario-nome {
+      margin-top: 10px; /* Espaço entre a imagem e o nome */
+      font-size: 14px; /* Tamanho do texto */
+      font-weight: bold; /* Deixa o nome em destaque */
+    }
+
+    /* Estilos gerais para a imagem do perfil quando logado */
+    .imagem-antiga {
+        outline: none;
+        border: none;
+        width: 50px;  /* Tamanho padrão da imagem */
+        height: 50px;
+    }
+
+    /* Estilo para a imagem quando não estiver logado */
+    .imagem-logout {
+        outline: none;
+        border: none;
+        width: 100px;  /* Aumenta o tamanho da imagem quando não logada */
+        height: 100px;
+        cursor: pointer;  /* Mostra o cursor de mão ao passar o mouse */
+    }
+
+    .perfil-container a:hover {
+        cursor: pointer; /* Mostra o cursor de mão ao passar o mouse */
+        background-color: none;
+    }
+
+  </style>
+
 </head>
 <body>
 
   <!-- Barra de navegação -->
   <nav class="navbar" id="patrao">
     <div class="navbar-title">Boxmore</div>
-    
+  
     <!-- Barra de pesquisa -->
     <div class="search-bar">
       <form method="get" action="{% url 'busca_produtos' %}">
@@ -25,21 +78,33 @@
       </form>
     </div>
   
-    <!-- Links para perfil, carrinho e suporte -->
     <div class="menu">
-      <!-- Link para o perfil do usuário -->
-      <a href="#"><img src="{% static 'perfil-conta.png' %}" alt="Perfil" class="menu-icon">
-      </a>
-      
-      <!-- Link para o carrinho de compras -->
-      <a href="#"><img src="{% static 'carrinho.png' %}" alt="Carrinho" class="menu-icon">
-      </a>
+      {% if usuario_logado %}
+      <div class="perfil-container">
+        <img src="{% static 'perfil-conta.png' %}" alt="Perfil" class="imagem-antiga">
+        <div class="usuario-nome">{{ usuario_logado }}</div> <!-- Nome abaixo da imagem -->
+      </div>
+      {% else %}
+      <div class="perfil-container">
+        <a href="{% url 'login' %}">
+          <img src="{% static 'perfil-conta.png' %}" alt="Perfil" class="imagem-logout">
+        </a>
+      </div>
+      {% endif %}
 
-      <!-- Link para Suporte -->
-      <a href="{% url 'suporte' %}" alt="suporte">
-        Suporte
+    <div class="menu">
+    
+      {% if usuario_logado %}
+      <a href="{% url 'logout' %}">Sair</a>  <!-- Link para fazer logout -->
+      {% endif %}
+
+      <a href="{% if usuario_logado %}{% url 'carrinho' %}{% else %}#{% endif %}" class="carrinho-icon {% if not usuario_logado %}desabilitado{% endif %}">
+        <img src="{% static 'carrinho.png' %}" alt="Carrinho">
       </a>
-      
+      {% if request.session.perfil == 'administrador' %}
+      <a href="/usuarios" alt="usuarios">Usuários</a>
+      {% endif %}
+      <a href="{% url 'suporte' %}" alt="Suporte">Suporte</a>
     </div>
   </nav>
 
@@ -47,8 +112,9 @@
   <div class="banner">
     <img src="{% static 'img-banner.png' %}" alt="Promoções especiais" class="banner-image">
   </div>
-  <br> <br>
-  <!-- Seção de produtos em promoção -->
+  <br><br>
+
+  <!-- Seção de produtos em promoção (com carrossel) -->
   <section id="destaques" class="produtos-destaque">
     <h2>Produtos em Promoção</h2>
     <div class="produtos">
@@ -56,10 +122,7 @@
         <div class="produto">
           <img src="{% static produto.imagem %}" alt="{{ produto.nome_produto }}">
           <h3>{{ produto.nome_produto }}</h3>
-          <p>R$ {{ produto.preco }}</p>
-          <p>Categoria: {{ produto.categoria }}</p>
           <p>Marca: {{ produto.marca }}</p>
-          <p>Cor: {{ produto.cor }}</p>
           <button class="add-carrinho">
             <a href="#">Adicionar ao Carrinho</a>
           </button>

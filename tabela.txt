@@ -6,3 +6,50 @@ CREATE TABLE produto (
     imagem VARCHAR(100),
     CONSTRAINT produto_nome_produto_key UNIQUE (nome_produto)
 );
+
+
+# def login(request):
+#     request.session['usuario_id'] =""
+    
+#     try:
+#         # Tentar estabelecer conexão com o banco de dados (dentro do bloco POST)
+#         if request.method == 'POST':
+#             bd = conecta_no_banco_de_dados()
+
+#             # Extrair credenciais do usuário do formulário enviado
+#             email = request.POST['username']
+#             senha = request.POST['password']
+#             # usuario1 = authenticate(username=request.POST['username'], password=request.POST['password'])
+#              # Validar as credenciais
+#             cursor = bd.cursor()
+#             cursor.execute("""
+#                         SELECT *
+#                         FROM usuarios
+#                         WHERE email = %s AND senha = %s;
+#                     """, (email, senha,))
+#             usuario = cursor.fetchone()
+#             cursor.close()
+#             bd.close()
+#             if usuario:
+#                 request.session['usuario_id'] = usuario[0]  # Iniciar sessão do usuário
+                
+              
+#                 return redirect('paginainicial')                     
+#             else:
+#                 print('Email ou senha inválidos.')
+#                     # Autenticação falhou, exibir mensagem de erro
+#                 mensagem_erro = 'Email ou senha inválidos.'
+#                 return render(request, 'login.html', {'mensagem_erro': mensagem_erro})
+             
+
+#         else:
+#             # Se não for uma solicitação POST, renderizar o formulário de login
+#             return render(request, 'login.html')
+        
+
+#     except Exception as e:
+#         # Se ocorrer um erro de conexão, exibir mensagem de erro
+#         mensagem_erro = f"Erro ao conectar ao banco de dados: {e}"
+#         return render(request, 'login.html', {'mensagem_erro': mensagem_erro})
+
+

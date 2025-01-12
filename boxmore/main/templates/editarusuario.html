@@ -1,0 +1,68 @@
+{% extends 'template.html' %}
+
+{% block titulo %}
+
+
+<title>Editar Usuário</title>
+
+
+
+{% endblock %}
+
+{% block conteudo %}
+<head>
+    <title>Editar Usuários</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'loja1.png' %}" type="image/png">
+</head>
+
+<body style="text-align: center;  font-family: Segoe UI;">
+       
+    
+    
+    <div>
+                <h1 style="text-align: center; font-size: 25px; font-family: Segoe UI;">
+            Por favor, edite os dados do usuário
+                    <br> <br>
+                    
+                <form method="POST" action="/editarusuario/{{ id }}">
+                    {% csrf_token %}  <div>
+                <input style="margin: 5px" class="inputlogin" type="text" name="nome" placeholder="Nome" >
+            </div>
+                       <div>
+                <input style="margin: 5px"  class="inputlogin"type="email" name="email" placeholder="E-mail" >
+            </div>
+                       <div>
+                <input style="margin: 5px" class="inputlogin" type="password" name="senha" placeholder="Senha">
+            </div>
+        </div>
+       
+        
+                    <br>
+        <button class="botaologin" type="submit">Atualizar</button>
+    
+
+    
+    
+    <script>
+      //Limpa os campos do formulário ao entrar na tela
+      $(document).ready(function() {
+        $('input[name="nome"]').val('');
+        $('input[name="email"]').val('');
+        $('input[name="senha"]').val('');
+      });
+    </script>
+    
+
+    
+    
+    </form>
+    <br>
+   
+<!--Div para exibir mensagens de erro, inicialmente oculta -->
+
+</div>
+
+
+</body>
+{% endblock %}

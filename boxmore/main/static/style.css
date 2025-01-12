@@ -1,7 +1,7 @@
 
 .titulo-principal {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: none;
   color: #333;
 }
 html, body {
@@ -10,7 +10,7 @@ html, body {
     font-family: sans-serif;
 }
 
-/* Navbar */
+/* 
 .navbar {
     background-color: #0000a4;
     padding: 0.8rem 0;
@@ -101,7 +101,7 @@ html, body {
 
 
 
-
+ */
 
 h2{
     margin-top: 0px;
@@ -110,15 +110,6 @@ h2{
     text-align: center;
   }
 
-  
-.imgpython{
-    width: 100px;
-    height: 150px;
-  }
-  .imgdjango{
-    width: 100px;
-    height: 100px; 
-  }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -177,6 +168,19 @@ button.excluir {
   color: white;
 }
 
+.cadastro-container{
+
+
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+
+}
+
+
 
 .botaologin {
  
@@ -184,30 +188,30 @@ button.excluir {
   
   height: 40px;
   
-  background-color: #0000a4;
+  background-color: #6A8B94ff;
  
   color: white;
  
   cursor: pointer;
-  border-color: yellow;
+  border-color: black;
   transition: background-color 0.3s ease;
 }
 .botaologin:hover { 
-  background-color: #0056b3; 
+  background-color: rgb(151, 28, 233); 
 }
 
 
 .botao {
   width: 188px; 
   height: 30px; 
-  background-color: #0000a4;
+  background-color: #6A8B94ff;
   color: white;
-  border-color: yellow;
+  border-color: none;
   text-decoration: none;
   outline: none;
   display: inline-block;
   padding: 3px 5px; 
-  border: 2px solid yellow;
+  border: 2px solid black;
   border-radius: 3px; 
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -215,10 +219,10 @@ button.excluir {
 }
 
 .botao:hover {
-  background-color: #0056b3;
+  background-color: #6A8B94ff;
 }
 .input-select {
-  border-color: yellow;  /* Cor da borda */
+  border-color: black;  /* Cor da borda */
   border-radius: 5px;     /* Bordas arredondadas */
   padding: 10px 20px;     /* Preenchimento interno do campo */
   width: 160px;           /* Largura do campo */
@@ -227,7 +231,7 @@ button.excluir {
 /* Estilo para os botões de rádio */
 input[type="radio"] {
   margin-right: 8px;
-  accent-color: #007bff; /* Cor personalizada do círculo */
+  accent-color: rgb(151, 28, 233); /* Cor personalizada do círculo */
   width: 18px;
   height: 18px;
   cursor: pointer;
@@ -244,7 +248,7 @@ label {
 
 /* Estilo para o hover nas labels */
 label:hover {
-  color: #007bff;
+  color: #6A8B94ff;
 }
 /* .inputlogin {
  
@@ -260,17 +264,17 @@ label:hover {
 } */
 /* Estilo para os campos de input */
 .inputlogin {
-  width: 100px;         /* Largura reduzida */
-  height: 20px;         /* Altura reduzida */
+  width: 180px;         /* Largura reduzida */
+  height: 30px;         /* Altura reduzida */
   padding: 10px 20px;   /* Preenchimento interno */
   font-size: 14px;      /* Tamanho da fonte reduzido */
-  border: 1px solid yellow; /* Cor da borda */
+  border: 1px solid black; /* Cor da borda */
   border-radius: 5px;   /* Bordas arredondadas */
 }
 
 /* Estilo do input quando em foco */
 .inputlogin:focus {
-  border-color: #007bff; /* Cor da borda quando em foco */
+  border-color: #6A8B94ff; /* Cor da borda quando em foco */
   outline: none;         /* Remove o contorno padrão */
 }
 
