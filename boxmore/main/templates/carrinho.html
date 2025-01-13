@@ -1,38 +1,55 @@
-
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <title>Carrinho</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - Boxmore</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'carrinho.css' %}">
-    <link rel="icon" href="{% static 'icon-camisa.png' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
 </head>
-<section id="carrinho" class="carrinho">
-        <div class="container">
-            <h3>Carrinho de Compras</h3>
-            <ul id="lista-carrinho"></ul>
-            <p id="total"></p>
-            <button class="btn" onclick="finalizarCompra()">Finalizar Compra</button>
+<body>
+
+    <nav class="navbar">
+        <!-- Barra de navegação -->
+        <div class="navbar-title">Boxmore</div>
+        <div class="menu">
+          <a href="/"><img src="{% static 'perfil-conta.png' %}" alt="Perfil" class="menu-icon"></a>
+          <a href="/carrinho_lista/"><img src="{% static 'carrinho.png' %}" alt="Carrinho" class="menu-icon"></a>
+          <a href="{% url 'suporte' %}" alt="suporte">Suporte</a>
         </div>
-    </section>
-
-    <section id="pagamento" class="pagamento" style="display: none;">
-        <div class="container">
-            <h3>Escolha a Forma de Pagamento</h3>
-            <form id="form-pagamento" onsubmit="processarPagamento(event)">
-                <label>
-                    <input type="radio" name="forma-pagamento" value="Cartão de Crédito" required>
-                    Cartão de Crédito
-                </label><br>
-                <label>
-                    <input type="radio" name="forma-pagamento" value="Boleto Bancário">
-                    Boleto Bancário
-                </label><br>
-                <label>
-                    <input type="radio" name="forma-pagamento" value="PIX">
-                    PIX
-                </label><br>
-                <button type="submit" class="btn">Pagar Agora</button>
-            </form>
-        </div>
-    </section>
+      </nav>
+      
+      <h2>Carrinho de Compras</h2>
 
 
+ <table>
+    <thead>
+      <tr>
+        <th>Nome do Produto</th>
+        <th>Nome Cliente</th>
+        <th>Quantidade</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in itens_carrinho %}
+      <tr>
+        <td>{{ item.2 }}</td>  <!-- Produto ID -->
+        <td>{{ item.1 }}</td>  <!-- Usuário ID -->
+        <td>{{ item.3 }}</td>  <!-- Quantidade -->
+        <td>{{ item.4 }}</td>  <!-- Status -->
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">Nenhum item no carrinho.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="post" action="{% url 'comprar_tudo' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn-comprar">Comprar Tudo</button>
+  </form>
+</body>
+</html>

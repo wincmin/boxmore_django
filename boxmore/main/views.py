@@ -14,6 +14,7 @@ from django.http import HttpResponseBadRequest  # Retorna uma resposta HTTP com 
 from django.db import transaction  # Usado para controlar transações de banco de dados (commit/rollback)
 from django.http import HttpResponse, JsonResponse  # 'HttpResponse' para resposta genérica e 'JsonResponse' para respostas JSON
 from django.contrib import messages  # Usado para mostrar mensagens de feedback ao usuário, como sucesso ou erro
+import mysql.connector
 
 def login(request):
     request.session['usuario_id'] = None
@@ -161,7 +162,20 @@ def cadastro(request):
 
 
 def carrinho(request):
-    return render(request, 'carrinho.html')
+    if not request.session.get('usuario_id'):
+        return redirect('/')
+    else:
+        cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+        cursor = cnx.cursor()
+        cursor.execute("""
+        SELECT c.quantidade, c.status, p.nome_produto, u.nome 
+        FROM carrinho c
+        JOIN usuarios u ON c.usuario_id = u.id
+        JOIN produto p ON c.produto_id = p.id
+        WHERE c.status = 'pendente'
+    """)
+        itens_carrinho = cursor.fetchall()
+        return render(request, 'carrinho.html', {'itens_carrinho': itens_carrinho})
 
 
 def logout(request):
@@ -169,21 +183,31 @@ def logout(request):
     return redirect('index') 
 
 def index(request):
-    usuario_logado = None 
+    # usuario_logado = None 
 
    
-    if request.session.get('usuario_id'):
-        usuario_id = request.session['usuario_id']
-        bd = conecta_no_banco_de_dados()
-        cursor = bd.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE id = %s;", (usuario_id,))
-        usuario = cursor.fetchone()
-        cursor.close()
-        bd.close()
+    # if request.session.get('usuario_id'):
+    #     usuario_id = request.session['usuario_id']
+    #     bd = conecta_no_banco_de_dados()
+    #     cursor = bd.cursor()
+    #     cursor.execute("SELECT * FROM usuarios WHERE id = %s;", (usuario_id,))
+    #     usuario = cursor.fetchone()
+    #     cursor.close()
+    #     bd.close()
 
-        if usuario:
-            usuario_logado = usuario[1]  
-    return render(request, 'index.html', {'usuario_logado': usuario_logado})
+    #     if usuario:
+    #         usuario_logado = usuario[1]  
+    # return render(request, 'index.html', {'usuario_logado': usuario_logado})
+
+    if not request.session.get('usuario_id'):
+        return redirect('/')
+    else:
+        cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+        cursor = cnx.cursor()
+        cursor.execute("SELECT * FROM produto")
+        produtos = cursor.fetchall()
+        return render(request, 'index.html', {'produtos': produtos})
+
 
 
 def sobre(request):
@@ -207,6 +231,8 @@ def busca_produtos(request):
 
     return render(request, 'index.html', {'produtos': produtos, 'query': query})
 
+
+
 def suporte(request):
     return render(request, 'suporte.html')
 
@@ -215,6 +241,49 @@ def sobrenos(request):
 
 def carrossel(request):
     return render(request, 'carrossel.html')
+
+def add_carrinho(request,id):
+    if not request.session.get('usuario_id'):
+        return redirect('/')
+    else:
+        usuario_id = request.session['usuario_id']
+        try:
+            # Verifica se o método é POST (já que estamos usando um formulário POST)
+            if request.method == 'POST':
+                quantidade = request.POST.get('quantidade')  # Pega a quantidade ou usa 1 como padrão
+                quantidade = int(quantidade)  # Certifica-se de que é um número inteiro
+
+                # Conectar ao banco de dados
+                cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+                cursor = cnx.cursor()
+                
+                # Inserir no carrinho com o valor da quantidade
+                sql = """
+                    INSERT INTO carrinho (usuario_id, produto_id, quantidade,status)
+                    VALUES (%s, %s, %s,%s);
+                """
+                values = (int(usuario_id), int(id), quantidade,"pendente")
+                cursor.execute(sql, values)
+
+                # Commit e fechamento da conexão
+                cnx.commit()
+                cnx.close()
+
+            # Após adicionar, renderizar novamente os produtos
+            cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+            cursor = cnx.cursor()
+            cursor.execute("SELECT * FROM produto")
+            produtos = cursor.fetchall()
+            return render(request, 'index.html', {'produtos': produtos})
+
+        except Exception as e:
+            # Em caso de erro
+            print(f"Erro ao atender chamado: {e}")
+            cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+            cursor = cnx.cursor()
+            cursor.execute("SELECT * FROM produto")
+            produtos = cursor.fetchall()
+            return render(request, 'index.html', {'produtos': produtos})
 
 
 def usuarios(request):
@@ -255,3 +324,26 @@ def excluirproduto(request, id):
             print(f"Erro ao excluir produto: {e}")
             messages.error(request, 'Falha ao excluir produto. Tente novamente mais tarde.')
             return redirect('carrinho')
+
+def comprar_tudo(request):
+    if not request.session.get('usuario_id'):
+        return redirect('/')
+    
+    # Conectar ao banco de dados
+    cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+    cursor = cnx.cursor()
+
+    # Atualizar todos os itens pendentes para "comprado"
+    cursor.execute("""
+        UPDATE carrinho
+        SET status = 'comprado'
+        WHERE status = 'pendente'
+    """)
+    cnx.commit()  # Confirmar as alterações no banco de dados
+
+    # Fechar a conexão
+    cursor.close()
+    cnx.close()
+
+    # Redirecionar de volta para a página do carrinho
+    return redirect('pagamento.html')

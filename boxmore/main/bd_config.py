@@ -1,36 +1,40 @@
 import mysql.connector
 
 def conecta_no_banco_de_dados():
-   
+    # Conectar ao servidor MySQL
     cnx = mysql.connector.connect(host='127.0.0.1', user='root', password='')
+
+    # Criar o cursor para interagir com o banco de dados
     cursor = cnx.cursor()
 
+    # Verificar se o banco de dados 'boxmore_banco' existe
     cursor.execute('SELECT COUNT(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = "boxmore_banco";')
     num_results = cursor.fetchone()[0]
 
-
+    # Fechar a conexão inicial
     cnx.close()
 
- 
+    # Se o banco de dados não existe, criá-lo
     if num_results == 0:
-        
+        # Conectar-se novamente ao servidor MySQL para criar o banco de dados
         cnx = mysql.connector.connect(host='127.0.0.1', user='root', password='')
-        cursor = cnx.cursor()
 
- 
+        cursor = cnx.cursor()
         cursor.execute('CREATE DATABASE boxmore_banco;')
         cnx.commit()
 
-   
+        # Conectar-se ao banco de dados recém-criado
         cnx = mysql.connector.connect(
             host='127.0.0.1',
             user='root',
             password='',
-            database='boxmore_banco' 
+            database='boxmore_banco'  # Especificar o banco de dados
         )
+
         cursor = cnx.cursor()
 
-        cursor.execute('''
+        # Criar a tabela de usuarios com a coluna 'perfil'
+        cursor.execute(''' 
             CREATE TABLE usuarios (
                 id INT AUTO_INCREMENT PRIMARY KEY, 
                 nome VARCHAR(255), 
@@ -42,12 +46,24 @@ def conecta_no_banco_de_dados():
 
         cursor.execute('''
             CREATE TABLE produto (
-                id SERIAL PRIMARY KEY,
+                id INT AUTO_INCREMENT PRIMARY KEY,
                 nome_produto VARCHAR(200) NOT NULL,
                 preco DECIMAL(10, 2) NOT NULL,
                 marca VARCHAR(100),
-                imagem VARCHAR(100),
-                CONSTRAINT produto_nome_produto_key UNIQUE (nome_produto)
+                imagem VARCHAR(100)
+            );
+        ''')
+
+        # Criar a tabela carrinho
+        cursor.execute('''
+            CREATE TABLE carrinho (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                usuario_id INT NOT NULL, 
+                produto_id INT NOT NULL, 
+                quantidade INT DEFAULT 1,
+                status VARCHAR(100),
+                FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE, 
+                FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE CASCADE
             );
         ''')
 
@@ -61,21 +77,31 @@ def conecta_no_banco_de_dados():
         cursor.execute(sql, valores)
         cnx.commit()
 
-        # Inserir dados iniciais na tabela 'produto'
-        nome_produto = "Fone Bluetooth Preto"
-        preco = 139.99
-        marca = "JBL"
-        imagem = "static/fone-bluetooth.jpg"
+        cnx.close()
+
+    # Conectar ao banco de dados 'boxmore_banco' existente
+    cnx = mysql.connector.connect(host='localhost', user='root', password='', database='boxmore_banco')
+    cursor = cnx.cursor()
+
+    # Verificar se a tabela 'produto' já contém dados
+    cursor.execute("SELECT COUNT(*) FROM produto;")
+    num_produtos = cursor.fetchone()[0]
+
+    # Se não houver dados, insira os dados iniciais
+    if num_produtos == 0:
+        dados_produtos = [
+            ('Fone Bluetooth JBL', 329.99, 'JBL', 'fone-bluetooth.jpg'),
+            ('Jaqueta Masculina', 199.99, 'Men', 'jaqueta-masc.jpg'),
+            ('Camiseta Marrom', 49.99, 'Z', 'camiseta-marrom.jpg'),
+            ('Kindle', 249.99, 'Amazon', 'kindle.jpg')
+        ]
 
         sql = "INSERT INTO produto (nome_produto, preco, marca, imagem) VALUES (%s, %s, %s, %s)"
-        valores = (nome_produto, preco, marca, imagem)
-
-        cursor.execute(sql, valores)
+        cursor.executemany(sql, dados_produtos)
         cnx.commit()
 
-        # Fechar a conexão
-        cursor.close()
-        cnx.close()
+    # Fechar a conexão
+    cnx.close()
 
     try:
         # Conectar ao banco de dados 'boxmore_banco' existente

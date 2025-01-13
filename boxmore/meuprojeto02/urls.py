@@ -22,20 +22,23 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     
-     path('', views.index, name='index'),
+     path('index', views.index, name='index'),
      path('editarusuario/<int:id>', views.editarusuario, name='editarusuario'),
      path('cadastro/', views.cadastro, name='cadastro'),
      path('excluirususario/<int:id>/', views.excluirususario, name='excluirususario'),
      path('usuarios/', views.usuarios, name='usuarios'),
      path('admin/', admin.site.urls),
      path('accounts/', include('django.contrib.auth.urls')),
-     path('login/', views.login, name='login'),
+     path('', views.login, name='login'),
      path('logout/', views.logout, name='logout'),
      path('pagamento/', views.pagamento, name='pagamento'),
      path('excluirproduto/<int:id>/', views.excluirproduto, name='excluirproduto'),
      path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
      path('suporte/', views.suporte, name='suporte'),
      path('carrinho/', views.carrinho, name='carrinho'), 
+     path('carrinho/<int:id>/',views.add_carrinho, name='carrinho'),
+     path('carrinholista', views.carrinho, name='carrinholista'),
+     path('comprar_tudo/', views.comprar_tudo, name='comprar_tudo'), 
      path('sobrenos/', views.sobrenos, name='sobrenos')
 
       
