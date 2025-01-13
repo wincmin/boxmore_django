@@ -22,25 +22,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     
+     path('', views.index, name='index'),
      path('editarusuario/<int:id>', views.editarusuario, name='editarusuario'),
-     path('contato', views.contato, name='contato'),
      path('cadastro/', views.cadastro, name='cadastro'),
      path('excluirususario/<int:id>/', views.excluirususario, name='excluirususario'),
-     path('contatos/', views.contatos, name='contatos'),
      path('usuarios/', views.usuarios, name='usuarios'),
      path('admin/', admin.site.urls),
      path('accounts/', include('django.contrib.auth.urls')),
-     path('atendimento/<int:id>/',views.atenderchamado, name='atendimento_detail'),
-
-      path('login/', views.login, name='login'),
-      path('logout/', views.logout, name='logout'),
-      path('pagamento/', views.pagamento, name='pagamento'),
-      path('', views.index, name='index'),
-      path('adicionar/', views.adicionar_produto, name='adicionar_produto'),
-      path('remover/<int:id>/', views.remover_produto, name='remover_produto'),
-      path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
-      path('suporte/', views.suporte, name='suporte'),
-      path('carrinho/', views.carrinho, name='carrinho')
+     path('login/', views.login, name='login'),
+     path('logout/', views.logout, name='logout'),
+     path('pagamento/', views.pagamento, name='pagamento'),
+     path('excluirproduto/<int:id>/', views.excluirproduto, name='excluirproduto'),
+     path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
+     path('suporte/', views.suporte, name='suporte'),
+     path('carrinho/', views.carrinho, name='carrinho'), 
+     path('sobrenos/', views.sobrenos, name='sobrenos')
 
       
  ] 

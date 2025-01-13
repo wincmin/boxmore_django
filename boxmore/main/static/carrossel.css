@@ -1,0 +1,95 @@
+.carrosselgeral {
+  
+    font-family: Arial, sans-serif;
+   
+ 
+    align-items: center;
+    display: block;
+   
+    background-attachment: fixed;
+ 
+     background-color: rgb(187, 187, 187);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    
+
+
+
+}
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(119, 120, 121);
+    font-size: 30px;
+    background-color: black;
+  
+}
+
+
+.caixa1 {
+    margin: auto;
+    height: 320px;
+    width: 88%;
+   
+    overflow: hidden;
+   
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.caixa-imagens {
+    
+    height: 425px;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.caixa-imagens img {
+   
+    width: 213px;
+    flex-shrink: 50;
+    height: 60%;
+    border-radius: 20px;
+
+}
+
+
+.button {
+    position: absolute;
+  
+    
+  
+     transform: translateY(-800%);
+    background-color: rgba(29, 25, 25, 0.671);
+    color: #fff;
+    border: none;
+    padding: 10px 20px 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 40%; 
+
+}
+.container .btn {
+   
+    background: #333;
+    color: #fff;
+    padding: 10px 80px;  
+    text-decoration: none;
+    border-radius: 5px;
+    cursor:grab;
+}
+
+.button.left {
+  
+    left: 2px;
+
+
+}
+
+.button.right {
+    right: 3px;
+}
+
+.button:focus {
+    outline: none;
+}

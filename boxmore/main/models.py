@@ -8,8 +8,6 @@ class Usuario(models.Model):
     nome = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     senha = models.CharField(max_length=255)
-
-
     def __str__(self):
         return self.nome
     
@@ -18,7 +16,7 @@ class Produto(models.Model):
     nome_produto = models.CharField(max_length=100)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     marca = models.CharField(max_length=100)
-    imagem = models.ImageField(upload_to='produtos/')
+    imagem = models.ImageField(upload_to='', null=True, blank=True)
 
     def __str__(self):
         return self.nome_produto

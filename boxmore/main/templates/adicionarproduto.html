@@ -1,0 +1,29 @@
+{% extends 'template.html' %}
+
+{% block titulo %}
+<title>Adicionar Produto</title>
+{% endblock %}
+
+{% block conteudo %}
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'icon-camisa.png' %}" type="image/png">
+</head>
+
+<body style="text-align: center; font-family: Segoe UI;">
+    <h1 style="font-size: 25px;">Adicionar Produto ao Carrinho</h1>
+    <form method="POST" action="/adicionarproduto">
+        {% csrf_token %}
+        <div>
+            <input style="margin: 5px;" class="inputlogin" type="text" name="nome" placeholder="Nome do Produto">
+        </div>
+        <div>
+            <input style="margin: 5px;" class="inputlogin" type="number" name="quantidade" placeholder="Quantidade">
+        </div>
+        <div>
+            <input style="margin: 5px;" class="inputlogin" type="number" step="0.01" name="preco" placeholder="Preço (R$)">
+        </div>
+        <button class="botaologin" type="submit">Adicionar</button>
+    </form>
+</body>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Contato,Usuario, Produto
+from .models import Contato,Usuario
 
 
 class ContatoForm(forms.ModelForm):
@@ -21,10 +21,4 @@ class LoginForm(forms.ModelForm):
         label='Senha', 
         widget=forms.PasswordInput(attrs={'placeholder': 'Digite sua senha', 'class':'inputlogin'})
     )
-
-
-
-class ProdutoForm(forms.ModelForm):
-    class Meta:
-        model = Produto
-        fields = ['nome_produto', 'preco', 'marca', 'imagem']
+    

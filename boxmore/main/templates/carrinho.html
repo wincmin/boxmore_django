@@ -1,25 +1,38 @@
-<h2>Carrinho de Compras</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for id, item in carrinho.items %}
-        <tr>
-            <td>{{ item.nome }}</td>
-            <td>R$ {{ item.preco }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>
-                <!-- <a href="{% url 'adicionar_ao_carrinho' id %}">Adicionar</a>
-                <a href="{% url 'remover_do_carrinho' id %}">Remover</a> -->
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<p>Total: R$ {{ total }}</p>
+
+<head>
+    <title>Carrinho</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'carrinho.css' %}">
+    <link rel="icon" href="{% static 'icon-camisa.png' %}" type="image/png">
+</head>
+<section id="carrinho" class="carrinho">
+        <div class="container">
+            <h3>Carrinho de Compras</h3>
+            <ul id="lista-carrinho"></ul>
+            <p id="total"></p>
+            <button class="btn" onclick="finalizarCompra()">Finalizar Compra</button>
+        </div>
+    </section>
+
+    <section id="pagamento" class="pagamento" style="display: none;">
+        <div class="container">
+            <h3>Escolha a Forma de Pagamento</h3>
+            <form id="form-pagamento" onsubmit="processarPagamento(event)">
+                <label>
+                    <input type="radio" name="forma-pagamento" value="Cartão de Crédito" required>
+                    Cartão de Crédito
+                </label><br>
+                <label>
+                    <input type="radio" name="forma-pagamento" value="Boleto Bancário">
+                    Boleto Bancário
+                </label><br>
+                <label>
+                    <input type="radio" name="forma-pagamento" value="PIX">
+                    PIX
+                </label><br>
+                <button type="submit" class="btn">Pagar Agora</button>
+            </form>
+        </div>
+    </section>
+
+
